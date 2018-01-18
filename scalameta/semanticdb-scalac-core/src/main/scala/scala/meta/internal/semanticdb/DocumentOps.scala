@@ -253,6 +253,21 @@ trait DocumentOps { self: DatabaseOps =>
               val mname = mctorrefs(gpoint)
               gtree match {
                 case g.Select(_, g.nme.CONSTRUCTOR) => success(mname, gtree.symbol)
+                case gtree: g.ClassDef => {
+                  val name = mstarts.get(gtree.pos.start).get
+                  
+                  gtree.impl.parents.filterNot(_.symbol == g.definitions.ObjectClass).foreach {
+                    case sel: g.Select => {
+                      println(g.showCode(sel))
+                      success(name, sel.symbol)
+                    }
+                    case tt: g.TypeTree => {
+                      println(g.showCode(tt))
+                      success(name, tt.symbol)
+                    }
+                    case _ => ()
+                  }  
+                }
                 case _ =>
               }
             }
