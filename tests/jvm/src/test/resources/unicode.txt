@@ -1,2 +1,3 @@
 s"${x}\uef17"
 s"]2;SBT${titleName}${titleBranch}\u0007"
+""" "quotes": "&#34; \u0022 %22 0x22 034 &#x22;", """
