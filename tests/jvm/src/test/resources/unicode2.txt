@@ -1,0 +1,2 @@
+"""hex \u0123\u4567\u89AB\uCDEF\uabcd\uef4A"""
+"""quotes &#34; \u005Cu0022 %22 0x22 034 &#x22;"""
