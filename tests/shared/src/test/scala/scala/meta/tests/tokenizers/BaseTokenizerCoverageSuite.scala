@@ -34,7 +34,14 @@ abstract class BaseTokenizerCoverageSuite extends FunSuite {
       }
     }
 
-  def check[T <: Tree, R <: Tree](annotedSource: String)(implicit projection: Projection[T, R]): Unit =
+  implicit val params: Projection[Decl.Def, Term.Param] = 
+    new Projection[Decl.Def, Term.Param] {
+      def apply(d: Decl.Def): Term.Param = {
+        d.paramss.head.head
+      }
+    }
+
+  def check[R <: Tree, T <: Tree](annotedSource: String)(implicit projection: Projection[T, R]): Unit =
     check0[T](annotedSource)(tree => projection(tree))
 
   def check[T <: Tree](annotedSource: String): Unit =
@@ -99,7 +106,7 @@ abstract class BaseTokenizerCoverageSuite extends FunSuite {
     }
 
     test(markedSource.toString) {
-      val tree = project(source.parse[Term].get.asInstanceOf[T])
+      val tree = project(source.parse[Stat].get.asInstanceOf[T])
       val tokens = tree.children.map(_.tokens).filter(_.nonEmpty)
       val tokensSorted = 
         tokens.map{ token =>
