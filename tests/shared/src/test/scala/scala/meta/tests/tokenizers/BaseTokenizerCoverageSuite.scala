@@ -99,8 +99,8 @@ abstract class BaseTokenizerCoverageSuite extends FunSuite {
     val markedSource = markers.foldLeft(fansi.Str(source)) {
       case (acc, (start, end)) => 
         val color =
-          if(odd) fansi.Back.Green ++ fansi.Color.LightBlue
-          else fansi.Back.LightBlue ++ fansi.Color.Green
+          if(odd) fansi.Back.Cyan ++ fansi.Color.Magenta
+          else fansi.Back.Magenta ++ fansi.Color.Cyan
         odd = !odd
         acc.overlay(color, start, end)
     }

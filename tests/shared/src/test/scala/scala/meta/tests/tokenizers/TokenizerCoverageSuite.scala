@@ -4,10 +4,10 @@ import scala.meta._
 
 class TokenizerCoverageSuite() extends BaseTokenizerCoverageSuite {
   check[Term.Annotate]("→(a)←: →@A←")
-  check[Term.Apply]("→(f)← (→(((a)))←)")
-  check[Term.Apply]("→(f)← (→(a)←)")
-  check[Term.Apply]("→(f)← (→{ case a => a }←)")
-  check[Term.Apply]("→(f)← (→{ x }←)")
+  check[Term.Apply]("→(f)←(→(((a)))←)")
+  check[Term.Apply]("→(f)←(→(a)←)")
+  check[Term.Apply]("→(f)←(→{ case a => a }←)")
+  check[Term.Apply]("→(f)←(→{ x }←)")
   check[Term.ApplyInfix]("→(a)← →op← →(b)←")
   check[Term.ApplyInfix]("→(a, b)← →op← (→c←, →d←)")
   check[Term.ApplyInfix]("→(a, b)← →op← →((c, d))←")
