@@ -28,6 +28,15 @@ object Input {
     override def toString = s"""Input.Stream(<stream>, Charset.forName("${charset.name}"))"""
   }
   object Stream {
+    def fromResource(path: RelativePath): Stream =
+      fromResource(path, StandardCharsets.UTF_8)
+      
+    def fromResource(path: RelativePath, charset: Charset): Stream =
+      Input.Stream(
+        this.getClass.getClassLoader.getResourceAsStream(path.toString),
+        charset  
+      )
+
     @SerialVersionUID(1L) private class SerializationProxy(@transient private var orig: Stream) extends Serializable {
       private def writeObject(out: java.io.ObjectOutputStream): Unit = {
         out.writeObject(orig.chars)
@@ -50,7 +59,7 @@ object Input {
     override def toString = s"""Input.File(new File("${path.syntax}"), Charset.forName("${charset.name}"))"""
   }
   object File {
-    def apply(path: AbsolutePath): Input.File = apply(path, Charset.forName("UTF-8"))
+    def apply(path: AbsolutePath): Input.File = apply(path, StandardCharsets.UTF_8)
     def apply(file: java.io.File, charset: Charset): Input.File = apply(AbsolutePath(file), charset)
     def apply(file: java.io.File): Input.File = apply(AbsolutePath(file))
     def apply(path: nio.Path, charset: Charset): Input.File = apply(AbsolutePath(path), charset)
@@ -87,7 +96,7 @@ object Input {
 
   implicit val charsToInput: Convert[Array[Char], Input] = Convert(chars => Input.String(new scala.Predef.String(chars)))
   implicit val stringToInput: Convert[scala.Predef.String, Input] = Convert(Input.String(_))
-  implicit def streamToInput[T <: java.io.InputStream]: Convert[T, Input] = Convert(is => Input.Stream(is, Charset.forName("UTF-8")))
+  implicit def streamToInput[T <: java.io.InputStream]: Convert[T, Input] = Convert(is => Input.Stream(is, StandardCharsets.UTF_8))
   // NOTE: fileToInput is lazy to avoid linking errors in Scala.js
   implicit lazy val fileToInput: Convert[java.io.File, Input] = Convert(Input.File.apply)
   implicit lazy val nioPathToInput: Convert[java.nio.file.Path, Input] = Convert(Input.File.apply)
